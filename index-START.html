@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Understanding JavaScript's Capture</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body class="bod">
+    <div class="one">
+      <div class="two">
+        <div class="three"></div>
+      </div>
+    </div>
+
+    <style>
+      html {
+        box-sizing: border-box;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      div {
+        width: 100%;
+        padding: 100px;
+      }
+
+      .one {
+        background: thistle;
+      }
+
+      .two {
+        background: mistyrose;
+      }
+
+      .three {
+        background: coral;
+      }
+      button {
+        padding: 10px 15px;
+        background-color: aquamarine;
+        border: none;
+      }
+    </style>
+
+    <button></button>
+    <script>
+      //event bublling from bottom to top evets fired inner most evet fired first
+      //event capturing from top to bottom events fired top most nd go down to target
+      const btns = document.querySelectorAll("div");
+
+      function handlerFun(e) {
+        // console.log(this.classList.value);//logs 3 2 1 from down to up bubling
+        console.log(this.classList.value); //logs 1 2 3 from up to down
+        //if u dont want to capture continues to down
+        e.stopPropagation(); //logs only 3 dont go up not bubless to 2 nd 1 in bubbling phase when capture:false in event handler
+        //if u clicked on div2 prints 2 not bubblesup like sameway div1 cliked 1 prints
+        // e.stopPropagation(); //logs only 1 dont go down not captured to 2 nd 3 in capturing phase
+      }
+
+      btns.forEach((btn) => btn.addEventListener("click", handlerFun)); //this is bubling
+      btns.forEach(
+        (btn) =>
+          // btn.addEventListener("click", handlerFun, { capture: true })//this is capturing phase true when cap:true then starts from top to bttm
+          btn.addEventListener("click", handlerFun, { capture: false }) //this is bubling phase cap set false by defult
+      );
+
+      /************************/
+      // if u dont want extra tyms cliked btn then add arug 'once:true' then it only cliked onces ,if u cliked more tym then not show mssg
+      // btns.forEach(
+      //   (btn) =>
+      //     // btn.addEventListener("click", handlerFun, { capture: true })//this is capturing phase true when cap:true then starts from top to bttm
+      //     btn.addEventListener("click", handlerFun, {
+      //       capture: false,
+      //       once: true,
+      //     }) //if u clik on div1 it only prints 1 1tym not more than ,if u cliked on 2 it prints 2 on first clik then again cliked prints 1 for parent div
+      //op
+      // 2
+      // 1
+      // );
+    </script>
+  </body>
+</html>
